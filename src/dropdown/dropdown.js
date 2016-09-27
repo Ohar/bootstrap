@@ -100,6 +100,10 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
       });
     }
 
+    if ($attrs.showOnHover) {
+      self.showOnHover = true;
+    }
+
     if (angular.isDefined($attrs.dropdownAppendTo)) {
       var appendToEl = $parse($attrs.dropdownAppendTo)(scope);
       if (appendToEl) {
@@ -342,6 +346,10 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
 
       element.bind('click', toggleDropdown);
 
+      if (dropdownCtrl.showOnHover) {
+        element.bind('hover', toggleDropdown);
+      }
+
       // WAI-ARIA
       element.attr({ 'aria-haspopup': true, 'aria-expanded': false });
       scope.$watch(dropdownCtrl.isOpen, function(isOpen) {
@@ -350,6 +358,10 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
 
       scope.$on('$destroy', function() {
         element.unbind('click', toggleDropdown);
+
+        if (dropdownCtrl.showOnHover) {
+          element.unbind('hover', toggleDropdown);
+        }
       });
     }
   };
